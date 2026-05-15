@@ -14,11 +14,11 @@ export const ProjectProvider = ({ children }) => {
       setLoading(true);
 
       const response = await api.get("/projects");
-console.log("res data",response.data)
+
       setProjects(response.data.projects);
 
     } catch (error) {
-      console.log("Error fetching projects", error);
+      setProjects([]);
     } finally {
       setLoading(false);
     }

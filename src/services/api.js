@@ -5,4 +5,16 @@ const api = axios.create({
   withCredentials: true,
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("devhub-user");
+      window.dispatchEvent(new Event("devhub:logout"));
+    }
+
+    return Promise.reject(error);
+  },
+);
+
 export default api;

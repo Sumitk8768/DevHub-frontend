@@ -1,37 +1,60 @@
+// pages/Register.jsx
+
 import React, { useContext } from 'react'
+
 import { useForm } from 'react-hook-form'
-import { useNavigate, Link } from 'react-router'
+
+import {
+  useNavigate,
+  Link,
+  Navigate,
+} from 'react-router'
 
 import api from '../services/api'
+
 import { Auth } from '../context/AuthContext'
 
 const Register = () => {
+
+  // HOOKS FIRST
   const navigate = useNavigate()
 
   const {
-    setIsAuthenticated,
-    setLoggedInUser,
+    loggedInUser,
+    login,
   } = useContext(Auth)
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: {
+      errors,
+      isSubmitting,
+    },
   } = useForm()
 
+  // REDIRECT AFTER HOOKS
+  if (loggedInUser) {
+    return <Navigate to="/dashboard" />
+  }
+
+  // SUBMIT
   const onSubmit = async (data) => {
     try {
-      const response = await api.post("/auth/register", data)
 
-      setIsAuthenticated(true)
-      setLoggedInUser(response.data.user)
+      const response = await api.post(
+        "/auth/register",
+        data
+      )
+
+      login(response.data.user)
 
       reset()
 
       navigate("/dashboard")
+
     } catch (error) {
-      console.log("Register Error", error)
     }
   }
 
@@ -141,7 +164,9 @@ const Register = () => {
             disabled={isSubmitting}
             className="mt-2 w-full rounded-2xl bg-(--accent) py-3.5 text-base font-bold text-[#060816] transition-all hover:bg-(--accent-hover)"
           >
-            {isSubmitting ? "Creating..." : "Create Account"}
+            {isSubmitting
+              ? "Creating..."
+              : "Create Account"}
           </button>
         </form>
 
@@ -161,4 +186,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default Register;

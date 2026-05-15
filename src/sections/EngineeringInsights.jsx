@@ -5,7 +5,6 @@ const EngineeringInsights = () => {
 
   const { blogs, loading } = useContext(Blog);
 
-    console.log(blogs)
     if (loading) {
   return <h1>Loading...</h1>;
 }
@@ -19,7 +18,7 @@ const EngineeringInsights = () => {
 
         <div className="grid gap-6 lg:grid-cols-3">
           {blogs.map((blog) => (
-            <BlogCard blog = {blog}/>
+            <BlogCard key={blog._id} blog = {blog}/>
           ))}
         </div>
       </section>

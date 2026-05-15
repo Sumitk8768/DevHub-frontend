@@ -6,7 +6,6 @@ const TrendingProjects = () => {
 
     const { projects, loading } = useContext(Project);
 
-    console.log(projects)
     if (loading) {
   return <h1>Loading...</h1>;
 }

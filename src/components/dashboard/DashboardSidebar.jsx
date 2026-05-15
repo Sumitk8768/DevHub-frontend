@@ -1,5 +1,3 @@
-// components/dashboard/DashboardSidebar.jsx
-
 import React from 'react'
 
 import {
@@ -7,89 +5,67 @@ import {
   FolderKanban,
   FileText,
   PlusSquare,
-  Settings,
+  PencilLine,
 } from 'lucide-react'
 
-const DashboardSidebar = () => {
-  const navItems = [
+const DashboardSidebar = ({
+  activeTab,
+  setActiveTab,
+}) => {
+  const tabs = [
     {
-      icon: <LayoutDashboard size={18} />,
-      label: "Dashboard",
-      active: true,
+      id: "overview",
+      label: "Overview",
+      icon: <LayoutDashboard size={17} />,
     },
     {
-      icon: <FolderKanban size={18} />,
+      id: "projects",
       label: "Projects",
+      icon: <FolderKanban size={17} />,
     },
     {
-      icon: <FileText size={18} />,
+      id: "blogs",
       label: "Blogs",
+      icon: <FileText size={17} />,
     },
     {
-      icon: <PlusSquare size={18} />,
-      label: "Create",
+      id: "create-project",
+      label: "Create Project",
+      icon: <PlusSquare size={17} />,
     },
     {
-      icon: <Settings size={18} />,
-      label: "Settings",
+      id: "create-blog",
+      label: "Create Blog",
+      icon: <PencilLine size={17} />,
     },
   ]
 
   return (
     <aside
-      className="flex min-h-screen w-[250px] flex-col justify-between border-r px-5 py-6"
+      className="sticky top-24 h-fit rounded-2xl border p-3"
       style={{
-        background: "#06111f",
+        background: "rgba(15,23,42,0.45)",
         borderColor: "var(--border-color)",
       }}
     >
-      {/* TOP */}
-      <div>
+      <div className="space-y-1.5">
         
-        {/* LOGO */}
-        <div className="flex items-center gap-3">
-          
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-(--accent) text-xl font-bold text-black">
-            D
-          </div>
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition-all ${
+              activeTab === tab.id
+                ? "bg-(--accent) text-black"
+                : "text-(--text-secondary) hover:bg-white/5 hover:text-(--text-primary)"
+            }`}
+          >
+            {tab.icon}
 
-          <div>
-            <h1 className="text-3xl font-bold text-(--accent)">
-              DevHub
-            </h1>
-
-            <p className="text-xs text-(--text-secondary)">
-              v0.4.2-alpha
-            </p>
-          </div>
-        </div>
-
-        {/* NAVIGATION */}
-        <div className="mt-14 space-y-2">
-          
-          {navItems.map((item) => (
-            <button
-              key={item.label}
-              className={`flex w-full items-center gap-4 rounded-2xl px-4 py-4 text-left transition-all ${
-                item.active
-                  ? "bg-(--accent) text-black"
-                  : "text-(--text-secondary) hover:bg-white/5 hover:text-(--text-primary)"
-              }`}
-            >
-              {item.icon}
-
-              <span className="font-medium">
-                {item.label}
-              </span>
-            </button>
-          ))}
-        </div>
+            <span>{tab.label}</span>
+          </button>
+        ))}
       </div>
-
-      {/* BOTTOM */}
-      <button className="rounded-2xl bg-(--accent) px-5 py-4 font-semibold text-black">
-        + Create Project
-      </button>
     </aside>
   )
 }

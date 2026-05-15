@@ -8,15 +8,13 @@ const Navbar = () => {
 
   const {
     isAuthenticated,
-    setIsAuthenticated,
     loggedInUser,
-    setLoggedInUser,
+    logout,
   } = useContext(Auth);
 
   // Logout
   const handleLogout = () => {
-    setIsAuthenticated(false);
-    setLoggedInUser(null);
+    logout();
 
     navigate("/login");
   };

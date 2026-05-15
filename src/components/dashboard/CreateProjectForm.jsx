@@ -1,106 +1,136 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
+// components/dashboard/CreateProjectForm.jsx
 
-const CreateProjectForm = () => {
+import React, { useContext, useEffect } from "react";
+
+import { useForm } from "react-hook-form";
+
+import { toast } from "react-toastify";
+
+import api from "../../services/api";
+
+import { Project } from "../../context/ProjectContext";
+
+const CreateProjectForm = ({ editingProject, setEditingProject }) => {
+  const { setProjects } = useContext(Project);
+
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
-  } = useForm()
+    formState: { isSubmitting },
+  } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data)
+  // PREFILL
+  useEffect(() => {
+    if (editingProject) {
+      reset(editingProject);
+    }
+  }, [editingProject, reset]);
 
-    reset()
-  }
+  // SUBMIT
+  const onSubmit = async (data) => {
+    try {
+      // UPDATE
+      if (editingProject) {
+        const response = await api.put(`/projects/${editingProject._id}`, data);
+
+        setProjects((prev) =>
+          prev.map((project) =>
+            project._id === editingProject._id
+              ? response.data.project
+              : project,
+          ),
+        );
+
+        toast.success("Project updated successfully");
+      }
+
+      // CREATE
+      else {
+        const response = await api.post("/projects", data);
+
+        setProjects((prev) => [response.data.project, ...prev]);
+
+        toast.success("Project created successfully");
+      }
+
+     setEditingProject(null)
+
+reset({
+  title: "",
+  desc: "",
+  techStack: "",
+  github: "",
+  liveDemo: "",
+})
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
 
   return (
     <div>
       <h1 className="text-4xl font-bold text-(--text-primary)">
-        Create Project
+        {editingProject ? "Edit Project" : "Create Project"}
       </h1>
 
       <p className="mt-3 text-(--text-secondary)">
-        Add a new project to your portfolio.
+        Publish and manage your developer projects.
       </p>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mt-10 max-w-3xl space-y-5"
       >
-        {/* TITLE */}
-        <div>
-          <input
-            type="text"
-            placeholder="Project Title"
-            {...register("title", {
-              required: "Project title is required",
-            })}
-            className="w-full rounded-2xl border border-(--border-color) bg-[#060816] px-5 py-4 text-(--text-primary) outline-none"
-          />
+        <input
+          type="text"
+          placeholder="Project Title"
+          {...register("title")}
+          className="w-full rounded-2xl border border-(--border-color) bg-[#060816] px-5 py-4 text-(--text-primary) outline-none"
+        />
 
-          {errors.title && (
-            <p className="mt-2 text-sm text-red-400">
-              {errors.title.message}
-            </p>
-          )}
-        </div>
+        <textarea
+          rows="5"
+          placeholder="Project Description"
+          {...register("desc")}
+          className="w-full rounded-2xl border border-(--border-color) bg-[#060816] px-5 py-4 text-(--text-primary) outline-none"
+        />
 
-        {/* DESCRIPTION */}
-        <div>
-          <textarea
-            rows="5"
-            placeholder="Project Description"
-            {...register("description", {
-              required: "Description is required",
-            })}
-            className="w-full rounded-2xl border border-(--border-color) bg-[#060816] px-5 py-4 text-(--text-primary) outline-none"
-          />
+        <input
+          type="text"
+          placeholder="Tech Stack"
+          {...register("techStack")}
+          className="w-full rounded-2xl border border-(--border-color) bg-[#060816] px-5 py-4 text-(--text-primary) outline-none"
+        />
 
-          {errors.description && (
-            <p className="mt-2 text-sm text-red-400">
-              {errors.description.message}
-            </p>
-          )}
-        </div>
+        <input
+          type="text"
+          placeholder="GitHub Link"
+          {...register("github")}
+          className="w-full rounded-2xl border border-(--border-color) bg-[#060816] px-5 py-4 text-(--text-primary) outline-none"
+        />
 
-        {/* TECH STACK */}
-        <div>
-          <input
-            type="text"
-            placeholder="Tech Stack"
-            {...register("techStack")}
-            className="w-full rounded-2xl border border-(--border-color) bg-[#060816] px-5 py-4 text-(--text-primary) outline-none"
-          />
-        </div>
+        <input
+          type="text"
+          placeholder="Live Demo Link"
+          {...register("liveDemo")}
+          className="w-full rounded-2xl border border-(--border-color) bg-[#060816] px-5 py-4 text-(--text-primary) outline-none"
+        />
 
-        {/* GITHUB */}
-        <div>
-          <input
-            type="text"
-            placeholder="GitHub Link"
-            {...register("github")}
-            className="w-full rounded-2xl border border-(--border-color) bg-[#060816] px-5 py-4 text-(--text-primary) outline-none"
-          />
-        </div>
 
-        {/* LIVE */}
-        <div>
-          <input
-            type="text"
-            placeholder="Live Demo Link"
-            {...register("live")}
-            className="w-full rounded-2xl border border-(--border-color) bg-[#060816] px-5 py-4 text-(--text-primary) outline-none"
-          />
-        </div>
-
-        <button className="rounded-2xl bg-(--accent) px-7 py-3 font-semibold text-black">
-          Publish Project
+        <button
+          disabled={isSubmitting}
+          className="rounded-2xl bg-(--accent) px-7 py-3 font-semibold text-black"
+        >
+          {isSubmitting
+            ? "Saving..."
+            : editingProject
+              ? "Update Project"
+              : "Publish Project"}
         </button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default CreateProjectForm
+export default CreateProjectForm;

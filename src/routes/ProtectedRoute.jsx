@@ -1,16 +1,34 @@
-import React, { useContext } from 'react'
-import { Navigate, Outlet } from 'react-router'
+import React, {
+  useContext,
+} from "react";
 
-import { Auth } from '../context/AuthContext'
+import {
+  Navigate,
+} from "react-router";
 
-const ProtectedRoute = () => {
-  const { isAuthenticated } = useContext(Auth)
+import { Auth } from "../context/AuthContext";
 
-  return isAuthenticated ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/login" />
-  )
-}
+const ProtectedRoute = ({
+  children,
+}) => {
 
-export default ProtectedRoute
+  const {
+    isAuthenticated,
+    loading,
+  } = useContext(Auth);
+
+  // WAIT FOR AUTH CHECK
+  if (loading) {
+    return null;
+  }
+
+  // NOT LOGGED IN
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+
+  // LOGGED IN
+  return children;
+};
+
+export default ProtectedRoute;

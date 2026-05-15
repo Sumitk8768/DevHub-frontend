@@ -15,7 +15,7 @@ const BlogDetails = () => {
 
       setBlog(response.data.blog)
     } catch (error) {
-      console.log("Error fetching blog", error)
+      setBlog(null)
     } finally {
       setLoading(false)
     }

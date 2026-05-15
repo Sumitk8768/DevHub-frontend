@@ -1,10 +1,9 @@
 import React from 'react'
 import { ExternalLink } from 'lucide-react'
-import { useNavigate } from 'react-router'
+import { Auth } from '../../context/AuthContext'
+import { Link } from 'react-router'
 
 const BlogCard = ({ blog }) => {
-
-  let navigate = useNavigate()
   return (
     <div
       className="group flex h-full flex-col rounded-3xl border p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/5"
@@ -86,7 +85,7 @@ const BlogCard = ({ blog }) => {
         }}
       >
         <button className="flex items-center gap-2 font-mono text-xs font-semibold text-[#d8b4fe] cursor-pointer transition hover:opacity-80"
-        onClick={() => navigate(`/blogs/${blog._id}`)}
+        onClick={() => <Link to={`/blogs/${blog._id}`}></Link>}
         >
           
           <ExternalLink size={14} />

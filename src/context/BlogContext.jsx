@@ -17,7 +17,7 @@ export const BlogProvider = ({ children }) => {
 
       setBlogs(response.data.blogs);
     } catch (error) {
-      console.log("Error fetching blogs", error);
+      setBlogs([]);
     } finally {
       setLoading(false);
     }
