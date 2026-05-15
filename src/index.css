@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #060816;
+  --bg-secondary: #0b1020;
+
+  --card-bg: rgba(17, 25, 40, 0.75);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+
+  --accent: #3cf2e3;
+  --accent-hover: #2dd4bf;
+
+  --border-color: rgba(255, 255, 255, 0.08);
+
+  --radius: 18px;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: Inter, sans-serif;
+}
+button{
+  cursor: pointer;
+}
