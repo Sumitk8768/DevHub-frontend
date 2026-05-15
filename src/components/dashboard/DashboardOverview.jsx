@@ -4,7 +4,7 @@ import { Auth } from '../../context/AuthContext'
 import { Project } from '../../context/ProjectContext'
 import { Blog } from '../../context/BlogContext'
 
-import ProjectCard from '../projects/ProjectCard'
+import ProjectCard from '../Projects/ProjectCard'
 import BlogCard from '../blogs/BlogCard'
 
 const DashboardOverview = () => {

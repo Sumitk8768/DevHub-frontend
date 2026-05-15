@@ -8,7 +8,7 @@ import { toast } from "react-toastify"
 
 import { Project } from "../../context/ProjectContext"
 
-import ProjectCard from "../projects/ProjectCard"
+import ProjectCard from "../Projects/ProjectCard"
 
 const DashboardProjects = ({
   setActiveTab,
